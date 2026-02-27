@@ -12,6 +12,7 @@ topology:
       labels:
         graph-icon: router
       image: ghcr.io/nokia/srlinux:24.10.1
+      mgmt-ipv4: 10.77.1.2
       type: ixrd3
       #startup-config: router/config.json
   
@@ -22,7 +23,7 @@ topology:
       kind: linux
       group: leaf
       mgmt-ipv4: 10.77.1.6
-      image: ghcr.io/abelperezr/ont-ds:0.2
+      image: ghcr.io/abelperezr/ont-ds:0.3
       binds:
         - configs/ont/authorized_keys:/tmp/authorized_keys:ro
       env:
