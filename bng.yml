@@ -1,0 +1,74 @@
+name: lab
+prefix: ""
+
+mgmt:
+  network: lab
+  ipv4-subnet: 10.77.1.0/24
+
+topology:
+  nodes:
+    # =========================================================================
+    # ONT1
+    # =========================================================================
+    ont1:
+      kind: linux
+      group: leaf
+      mgmt-ipv4: 10.77.1.6
+      image: ghcr.io/abelperezr/ont-ds:0.2
+      binds:
+        - configs/ont/authorized_keys:/tmp/authorized_keys:ro
+      env:
+        CONNECTION_TYPE: ipoe
+        VLAN_ID: "150"
+        IFPHY: "eth1"
+        IFLAN: "eth2"
+        MAC_ADDRESS: "00:D0:F6:01:01:01"
+        USER_PASSWORD: "test"
+      ports:
+        - 56673:22
+        - 8081:8080
+
+    # =========================================================================
+    # ONT2 
+    # =========================================================================
+    ont2:
+      kind: linux
+      group: leaf
+      mgmt-ipv4: 10.77.1.7
+      image: ghcr.io/abelperezr/ont-ds:0.2
+      binds:
+        - configs/ont/authorized_keys:/tmp/authorized_keys:ro
+      env:
+        CONNECTION_TYPE: pppoe
+        PPP_USER: "test@test.com"
+        PPP_PASS: "testlab123"
+        VLAN_ID: "150"
+        IFPHY: "eth1"
+        IFLAN: "eth2"
+        MAC_ADDRESS: "00:D0:F6:01:01:02"
+        USER_PASSWORD: "test"
+      ports:
+        - 56674:22
+        - 8082:8080
+
+    # =========================================================================
+    # PC1 
+    # =========================================================================
+    pc1:
+      kind: linux
+      group: leaf
+      mgmt-ipv4: 10.77.1.17
+      image: ghcr.io/srl-labs/network-multitool
+      ports:
+        - 56677:22
+      exec:
+        - bash -lc "ip link set dev eth1 up || true"
+        - bash -lc "sysctl -w net.ipv6.conf.all.forwarding=0 || true"
+        - bash -lc "sysctl -w net.ipv6.conf.eth1.accept_ra=2 || true"
+        - bash -lc "sysctl -w net.ipv6.conf.eth1.autoconf=1 || true"
+    # =========================================================================
+    # CONEXIONES
+    # =========================================================================
+  links:
+    - endpoints: ["ont1:eth2", "pc1:eth1"]
+  
