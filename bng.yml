@@ -7,14 +7,11 @@ mgmt:
 
 topology:
   nodes:
-    srlrouter:
-      kind: nokia_srlinux
-      labels:
-        graph-icon: router
-      image: ghcr.io/nokia/srlinux:24.10.1
+    rt-core:
+      kind: huawei_vrp
+      image: vrnetlab/huawei_vrp:ne40e-8.180
       mgmt-ipv4: 10.77.1.2
-      type: ixrd3
-      #startup-config: router/config.json
+      #startup-config: configs/myconfig.txt
   
     # =========================================================================
     # ONT1
@@ -57,6 +54,6 @@ topology:
     # CONEXIONES
     # =========================================================================
   links:
-    - endpoints: ["ont1:eth1", "srlrouter:e1-1"]
+    - endpoints: ["ont1:eth1", "rt-core:eth1"]
     - endpoints: ["ont1:eth2", "pc1:eth1"]
   
