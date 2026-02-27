@@ -7,6 +7,14 @@ mgmt:
 
 topology:
   nodes:
+    srlrouter:
+      kind: nokia_srlinux
+      labels:
+        graph-icon: router
+      image: ghcr.io/nokia/srlinux:24.10.1
+      type: ixrd3
+      #startup-config: router/config.json
+  
     # =========================================================================
     # ONT1
     # =========================================================================
@@ -28,29 +36,7 @@ topology:
         - 56673:22
         - 8081:8080
 
-    # =========================================================================
-    # ONT2 
-    # =========================================================================
-    ont2:
-      kind: linux
-      group: leaf
-      mgmt-ipv4: 10.77.1.7
-      image: ghcr.io/abelperezr/ont-ds:0.3
-      binds:
-        - configs/ont/authorized_keys:/tmp/authorized_keys:ro
-      env:
-        CONNECTION_TYPE: pppoe
-        PPP_USER: "test@test.com"
-        PPP_PASS: "testlab123"
-        VLAN_ID: "150"
-        IFPHY: "eth1"
-        IFLAN: "eth2"
-        MAC_ADDRESS: "00:D0:F6:01:01:02"
-        USER_PASSWORD: "test"
-      ports:
-        - 56674:22
-        - 8082:8080
-
+   
     # =========================================================================
     # PC1 
     # =========================================================================
@@ -70,5 +56,6 @@ topology:
     # CONEXIONES
     # =========================================================================
   links:
+    - endpoints: ["ont1:eth1", "srlrouter:e1-1"]
     - endpoints: ["ont1:eth2", "pc1:eth1"]
   
