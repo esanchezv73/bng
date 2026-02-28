@@ -4,6 +4,7 @@ ipv6 enable
 ipv6 address 2001:DB8:55:22::1/64
 undo shutdown
 quit
+dhcpv6 enable
 dhcpv6 duid llt
 commit
 ipv6 prefix PD-POOL delegation
