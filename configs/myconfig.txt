@@ -1,0 +1,11 @@
+interface Ethernet1/0/0.150
+vlan-type dot1q 150
+ipv6 enable
+ipv6 address 2001:DB8:55:22::1/64
+undo shutdown
+quit
+dhcpv6 duid llt
+commit
+ipv6 prefix PD-POOL delegation
+prefix 2001:DB8:1000::/40 delegating-prefix-length 56
+
