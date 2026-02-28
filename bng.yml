@@ -20,7 +20,7 @@ topology:
       kind: linux
       group: leaf
       mgmt-ipv4: 10.77.1.6
-      image: ghcr.io/abelperezr/ont-ds:0.3
+      image: ghcr.io/abelperezr/ont-ds:0.2
       binds:
         - configs/ont/authorized_keys:/tmp/authorized_keys:ro
       env:
